@@ -1,4 +1,4 @@
-# Python interface for asymmetric numeral systems (ANS)
+# Python interface for ryg_rans entropy coding
 
 This repository is based on [CompressAI](https://github.com/InterDigitalInc/CompressAI) and [ryg_rans](https://github.com/rygorous/ryg_rans) with minor modifications to make ANS easier to use for PyTorch models.
 
