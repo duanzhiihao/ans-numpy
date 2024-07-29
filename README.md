@@ -4,7 +4,7 @@ This repository is based on [CompressAI](https://github.com/InterDigitalInc/Comp
 
 - The C++ function accepts NumPy inputs (instead of Python lists)
 - Supports CompressAI models with minimal changes
-- Faster than the `encode_with_indexes()` and `decode_with_indexes()` in CompressAI
+- Faster than CompressAI's `encode_with_indexes()` and `decode_with_indexes()`
 
 
 ## Install
