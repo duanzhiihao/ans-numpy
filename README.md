@@ -22,9 +22,10 @@ Then `test-compressai.ipynb` should work.
 
 ## Speed comparison
 
-### End-to-end compression of an image using `compressai.zoo.mbt2018_mean(quality=1)`
+### End-to-end compression of Kodak images using `compressai.zoo.mbt2018_mean`
 
 - **Image size:** 512x768
+    - Speed averaged over 24 images
 - **GPU (neural networks forward):** Nvidia RTX 4090
 - **CPU (entropy coding, using a single thread):** Intel 10700k
 
