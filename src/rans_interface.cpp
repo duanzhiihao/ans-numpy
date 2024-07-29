@@ -128,11 +128,11 @@ void BufferedRansEncoder::encode_with_np(
 
         uint32_t raw_val = 0;
         if (value < 0) {
-            std::cout << "Warning: 0 > value == " << value << std::endl;
+            // std::cout << "Warning: 0 > value == " << value << std::endl;
             raw_val = -2 * value - 1;
             value = max_value;
         } else if (value >= max_value) {
-            std::cout << "Warning: value >= max_value: " << value << " > " << max_value << std::endl;
+            // std::cout << "Warning: value >= max_value: " << value << " > " << max_value << std::endl;
             raw_val = 2 * (value - max_value);
             value = max_value;
         }
@@ -147,7 +147,7 @@ void BufferedRansEncoder::encode_with_np(
 
         /* Bypass coding mode (value == max_value -> sentinel flag) */
         if (value == max_value) {
-            std::cout << "Warning: value == max_value == " << value << std::endl;
+            // std::cout << "Warning: value == max_value == " << value << std::endl;
             /* Determine the number of bypasses (in bypass_precision size) needed to
              * encode the raw value. */
             int32_t n_bypass = 0;
@@ -282,7 +282,7 @@ std::vector<int32_t> RansDecoder::decode_with_np(
         int32_t value = static_cast<int32_t>(s);
 
         if (value == max_value) {
-            std::cout << "Warning: value == max_value == " << value << std::endl;
+            // std::cout << "Warning: value == max_value == " << value << std::endl;
             /* Bypass decoding mode */
             int32_t val = Rans64DecGetBits(&rans, &ptr, bypass_precision);
             int32_t n_bypass = val;
