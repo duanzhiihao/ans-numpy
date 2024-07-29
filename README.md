@@ -3,8 +3,8 @@
 This repository is based on [CompressAI](https://github.com/InterDigitalInc/CompressAI) and [ryg_rans](https://github.com/rygorous/ryg_rans) with minor modifications to make ANS easier to use for PyTorch models.
 
 - The C++ function accepts NumPy inputs (instead of Python lists)
-- Supports [CompressAI](https://github.com/InterDigitalInc/CompressAI) models with minimal changes
-- Faster than `encode_with_indexes()` and `decode_with_indexes` in CompressAI
+- Supports CompressAI models with minimal changes
+- Faster than the `encode_with_indexes()` and `decode_with_indexes()` in CompressAI
 
 
 ## Install
