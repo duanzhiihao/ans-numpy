@@ -37,7 +37,7 @@ class MyGaussianConditional(GaussianConditional):
 
         strings = []
         for i in range(symbols.size(0)):
-            rv = ansnp.RansEncoder().encode_with_np(
+            rv = ansnp.RansEncoder().encode_with_numpy(
                 symbols[i].reshape(-1).numpy(),
                 indexes[i].reshape(-1).numpy(),
                 cdfs, cdf_lengths, offsets,
@@ -94,12 +94,12 @@ class MyGaussianConditional(GaussianConditional):
         offsets = self._offset.to(dtype=torch.int32, device='cpu').reshape(-1).numpy()
 
         for i, s in enumerate(strings):
-            values = ansnp.RansDecoder().decode_with_np(
+            values = ansnp.RansDecoder().decode_with_numpy(
                 s, indexes[i].reshape(-1).numpy(),
                 cdfs, cdf_lengths, offsets,
             )
-            outputs[i] = torch.tensor(
-                values, device=outputs.device, dtype=outputs.dtype
-            ).reshape(outputs[i].size())
+            import numpy as np
+            assert isinstance(values, np.ndarray)
+            outputs[i] = torch.from_numpy(values).to(outputs.device).reshape(outputs[i].shape)
         outputs = self.dequantize(outputs, means, dtype)
         return outputs

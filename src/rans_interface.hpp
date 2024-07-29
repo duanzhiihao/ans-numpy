@@ -56,7 +56,7 @@ public:
     BufferedRansEncoder &operator=(const BufferedRansEncoder &) = delete;
     BufferedRansEncoder &operator=(BufferedRansEncoder &&) = delete;
 
-    void encode_with_np(
+    void encode_with_numpy(
         const py::array_t<int32_t> &symbols,
         const py::array_t<int32_t> &indexes,
         const py::array_t<int32_t> &cdfs,
@@ -79,7 +79,7 @@ public:
     RansEncoder &operator=(const RansEncoder &) = delete;
     RansEncoder &operator=(RansEncoder &&) = delete;
 
-    py::bytes encode_with_np(
+    py::bytes encode_with_numpy(
         const py::array_t<int32_t> &symbols,
         const py::array_t<int32_t> &indexes,
         const py::array_t<int32_t> &cdfs,
@@ -97,7 +97,7 @@ public:
     RansDecoder &operator=(const RansDecoder &) = delete;
     RansDecoder &operator=(RansDecoder &&) = delete;
 
-    std::vector<int32_t> decode_with_np(
+    py::array_t<int32_t> decode_with_numpy(
             const std::string &encoded,
             const py::array_t<int32_t> &indexes,
             const py::array_t<int32_t> &cdfs,

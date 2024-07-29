@@ -96,7 +96,7 @@ inline uint32_t Rans64DecGetBits(Rans64State *r, uint32_t **pptr, uint32_t n_bit
 } // namespace
 
 
-void BufferedRansEncoder::encode_with_np(
+void BufferedRansEncoder::encode_with_numpy(
     const py::array_t<int32_t> &symbols,
     const py::array_t<int32_t> &indexes,
     const py::array_t<int32_t> &cdfs,
@@ -203,7 +203,7 @@ py::bytes BufferedRansEncoder::flush() {
 }
 
 
-py::bytes RansEncoder::encode_with_np(
+py::bytes RansEncoder::encode_with_numpy(
     const py::array_t<int32_t> &symbols,
     const py::array_t<int32_t> &indexes,
     const py::array_t<int32_t> &cdfs,
@@ -211,7 +211,7 @@ py::bytes RansEncoder::encode_with_np(
     const py::array_t<int32_t> &offsets
 ) {
     BufferedRansEncoder buffered_rans_enc;
-    buffered_rans_enc.encode_with_np(symbols, indexes, cdfs, cdfs_sizes, offsets);
+    buffered_rans_enc.encode_with_numpy(symbols, indexes, cdfs, cdfs_sizes, offsets);
     return buffered_rans_enc.flush();
 }
 
@@ -234,7 +234,7 @@ uint32_t rfind(
 }
 
 
-std::vector<int32_t> RansDecoder::decode_with_np(
+py::array_t<int32_t> RansDecoder::decode_with_numpy(
     const std::string &encoded,
     const py::array_t<int32_t> &indexes,
     const py::array_t<int32_t> &cdfs,
@@ -252,7 +252,7 @@ std::vector<int32_t> RansDecoder::decode_with_np(
     size_t num_cdfs = u_cdfs.shape(0);
     size_t vocab_size = u_cdfs.shape(1);
 
-    std::vector<int32_t> output(num_symbols);
+    py::array_t<int32_t> output(num_symbols);
 
     Rans64State rans;
     uint32_t *ptr = (uint32_t *)encoded.data();
@@ -306,7 +306,7 @@ std::vector<int32_t> RansDecoder::decode_with_np(
             }
         }
 
-        output[i] = value + offset;
+        output.mutable_at(i) = value + offset;
     }
 
     return output;
@@ -322,9 +322,9 @@ PYBIND11_MODULE(ansnp, m) {
 
     py::class_<RansEncoder>(m, "RansEncoder", py::module_local())
             .def(py::init<>())
-            .def("encode_with_np", &RansEncoder::encode_with_np);
+            .def("encode_with_numpy", &RansEncoder::encode_with_numpy);
 
     py::class_<RansDecoder>(m, "RansDecoder", py::module_local())
             .def(py::init<>())
-            .def("decode_with_np", &RansDecoder::decode_with_np);
+            .def("decode_with_numpy", &RansDecoder::decode_with_numpy);
 }
