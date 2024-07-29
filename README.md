@@ -22,6 +22,10 @@ Then `test-compressai.ipynb` should work.
 
 ## Speed comparison
 
+- **Image size:** 512x768
+- **GPU (neural networks forward):** Nvidia RTX 4090
+- **CPU (entropy coding, using a single thread):** Intel 10700k
+
 <p align="center">
 <img src="figures/model-time.png">
 </p>
