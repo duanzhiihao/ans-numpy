@@ -104,7 +104,7 @@ void BufferedRansEncoder::encode_with_numpy(
     const py::array_t<int32_t> &offsets
 ) {
     assert(symbols.shape(0) == indexes.shape(0));
-    assert(cdfs.shape(0) == cdfs_sizes.shape(0) == offsets.shape(0));
+    assert(cdfs.shape(0) == cdfs_sizes.shape(0) && cdfs_sizes.shape(0) == offsets.shape(0));
 
     auto u_symbols = symbols.unchecked<1>();
     auto u_indexes = indexes.unchecked<1>();
@@ -119,10 +119,10 @@ void BufferedRansEncoder::encode_with_numpy(
     // backward loop on symbols from the end;
     for (size_t i = 0; i < num_symbols; ++i) {
         const int32_t cdf_idx = u_indexes(i);
-        assert(0 <= cdf_idx < num_cdfs);
+        assert(0 <= cdf_idx && cdf_idx < num_cdfs);
 
         const int32_t max_value = u_cdfs_sizes(cdf_idx) - 2;
-        assert(0 <= max_value < vocab_size - 1);
+        assert(0 <= max_value && max_value < vocab_size - 1);
 
         int32_t value = u_symbols(i) - u_offsets(cdf_idx);
 
@@ -137,7 +137,7 @@ void BufferedRansEncoder::encode_with_numpy(
             value = max_value;
         }
 
-        assert(0 <= value < u_cdfs_sizes(cdf_idx) - 1);
+        assert(0 <= value && value < u_cdfs_sizes(cdf_idx) - 1);
 
         _syms.push_back({
             static_cast<uint16_t>(u_cdfs(cdf_idx, value)),
@@ -222,8 +222,8 @@ uint32_t rfind(
     const int32_t max_length,
     const uint32_t cum_freq
 ) {
-    assert(0 <= row_idx < cdfs.shape(0));
-    assert(0 <= max_length < cdfs.shape(1));
+    assert(0 <= row_idx && row_idx < cdfs.shape(0));
+    assert(0 <= max_length && max_length < cdfs.shape(1));
 
     auto u_cdfs = cdfs.unchecked<2>();
 
@@ -241,7 +241,7 @@ py::array_t<int32_t> RansDecoder::decode_with_numpy(
     const py::array_t<int32_t> &cdfs_sizes,
     const py::array_t<int32_t> &offsets
 ) {
-    assert(cdfs.shape(0) == cdfs_sizes.shape(0) == offsets.shape(0));
+    assert(cdfs.shape(0) == cdfs_sizes.shape(0) && cdfs_sizes.shape(0) == offsets.shape(0));
 
     auto u_indexes = indexes.unchecked<1>();
     auto u_cdfs = cdfs.unchecked<2>();
@@ -261,12 +261,12 @@ py::array_t<int32_t> RansDecoder::decode_with_numpy(
 
     for (size_t i = 0; i < static_cast<int>(num_symbols); ++i) {
         const int32_t cdf_idx = u_indexes(i);
-        assert(0 <= cdf_idx < num_cdfs);
+        assert(0 <= cdf_idx && cdf_idx < num_cdfs);
 
         int32_t size = u_cdfs_sizes(cdf_idx);
 
         const int32_t max_value = size - 2;
-        assert(0 <= max_value < vocab_size - 1);
+        assert(0 <= max_value && max_value < vocab_size - 1);
 
         const int32_t offset = u_offsets(cdf_idx);
 
